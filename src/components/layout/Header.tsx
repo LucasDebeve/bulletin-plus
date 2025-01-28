@@ -16,7 +16,9 @@ function Header() {
         'position-absolute top-0 left-0 right-0 z-10 flex items-center px-4'
       }
     >
-      <span className={'text-md font-semibold ml-2 mr-4'}>OuafNotes</span>
+      <span className={'text-md font-semibold ml-2 mr-4'}>
+        Bulletin <span className="text-xl">+</span>
+      </span>
       <MenubarMenu>
         <MenubarTrigger>Accueil</MenubarTrigger>
         <MenubarContent>
