@@ -61,7 +61,6 @@ export function DataTable<TData, TValue>({
           className="max-w-sm"
         />
       </div>
-      <div>{JSON.stringify(table.getState().columnFilters)}</div>
       <div className="rounded-md border">
         <Table>
           <TableHeader>
