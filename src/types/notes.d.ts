@@ -1,32 +1,32 @@
 type Evaluation = {
-    note: number;
-    coefficient: number;
+  note: number;
+  coefficient: number;
 };
 
 export type MatiereEvaluee = {
-    evaluations: Evaluation[];
-    matiere: string;
+  evaluations: Evaluation[];
+  matiere: string;
 };
 
 export type Competence = {
-    id: number;
-    name: string;
+  id: number;
+  name: string;
 };
 
 export type Coef = {
-    ue: number;
-    coef: number;
+  ue: number;
+  coef: number;
 };
 
 export type Matiere = {
-    coefs: Coef[];
-    matiere: string;
+  coefs: Coef[];
+  matiere: string;
 };
 
 export type ApiData = [MatiereEvaluee[], Competence[], Matiere[]];
 
 export type EvaluationComplete = {
-    note: number;
-    coefficient: number;
-    matiere: Matiere;
+  note: number;
+  coefficient: number;
+  matiere: Matiere;
 };
