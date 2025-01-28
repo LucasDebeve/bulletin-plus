@@ -1,6 +1,6 @@
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
-import { MatiereEvaluee, EvaluationComplete } from "@/types/notes";
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+import { MatiereEvaluee, EvaluationComplete } from '@/types/notes';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

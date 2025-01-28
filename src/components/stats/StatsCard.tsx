@@ -5,9 +5,9 @@ import {
   CardFooter,
   CardDescription,
   CardTitle,
-} from "@/components/ui/card";
-import { MoveUpRight, MoveDownRight, Equal } from "lucide-react";
-import { cn } from "@/lib/utils.ts";
+} from '@/components/ui/card';
+import { MoveUpRight, MoveDownRight, Equal } from 'lucide-react';
+import { cn } from '@/lib/utils.ts';
 
 type StatsCardProps = {
   value: number;
@@ -34,11 +34,11 @@ function StatsCard({
 
   return (
     <Card>
-      <CardHeader className={"pb-0"}>
+      <CardHeader className={'pb-0'}>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
-      <CardContent className={hasOldValue ? "pb-0" : ""}>
-        <CardTitle className={"text-4xl font-medium"}>
+      <CardContent className={hasOldValue ? 'pb-0' : ''}>
+        <CardTitle className={'text-4xl font-medium'}>
           {value.toLocaleString()}
         </CardTitle>
       </CardContent>
@@ -47,12 +47,12 @@ function StatsCard({
           <CardDescription>
             <span
               className={cn(
-                "font-medium",
+                'font-medium',
                 isPositive
-                  ? "text-green-500"
+                  ? 'text-green-500'
                   : isEqual
-                    ? "text-muted-foreground"
-                    : "text-destructive",
+                    ? 'text-muted-foreground'
+                    : 'text-destructive'
               )}
             >
               {isPourcentage
@@ -61,17 +61,17 @@ function StatsCard({
               {isPositive ? (
                 <>
                   d'augmentation
-                  <MoveUpRight className={"inline-block ml-1"} />
+                  <MoveUpRight className={'inline-block ml-1'} />
                 </>
               ) : isEqual ? (
                 <>
                   stable
-                  <Equal className={"inline-block ml-1"} />
+                  <Equal className={'inline-block ml-1'} />
                 </>
               ) : (
                 <>
                   de diminution
-                  <MoveDownRight className={"inline-block ml-1"} />
+                  <MoveDownRight className={'inline-block ml-1'} />
                 </>
               )}
             </span>

@@ -8,7 +8,7 @@ import {
   SortingState,
   getSortedRowModel,
   getFilteredRowModel,
-} from "@tanstack/react-table";
+} from '@tanstack/react-table';
 
 import {
   Table,
@@ -17,10 +17,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Input } from "@/components/ui/input";
-import { DataTablePagination } from "@/components/notes/DataTablePagination.tsx";
-import { useState } from "react";
+} from '@/components/ui/table';
+import { Input } from '@/components/ui/input';
+import { DataTablePagination } from '@/components/notes/DataTablePagination.tsx';
+import { useState } from 'react';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -54,9 +54,9 @@ export function DataTable<TData, TValue>({
       <div className="flex items-center py-4">
         <Input
           placeholder="Filtrer les matières..."
-          value={(table.getColumn("matiere")?.getFilterValue() as string) ?? ""}
+          value={(table.getColumn('matiere')?.getFilterValue() as string) ?? ''}
           onChange={(event) =>
-            table.getColumn("matiere")?.setFilterValue(event.target.value)
+            table.getColumn('matiere')?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
@@ -74,7 +74,7 @@ export function DataTable<TData, TValue>({
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext(),
+                            header.getContext()
                           )}
                     </TableHead>
                   );
@@ -87,13 +87,13 @@ export function DataTable<TData, TValue>({
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
+                  data-state={row.getIsSelected() && 'selected'}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext(),
+                        cell.getContext()
                       )}
                     </TableCell>
                   ))}

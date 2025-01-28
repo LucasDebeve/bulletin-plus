@@ -1,27 +1,27 @@
-import * as React from "react";
-import * as AvatarPrimitive from "@radix-ui/react-avatar";
+import * as React from 'react';
+import * as AvatarPrimitive from '@radix-ui/react-avatar';
 
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
 
 const Avatar = React.forwardRef<
   React.ElementRef<typeof AvatarPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root> & {
-    size?: "sm" | "md" | "lg" | "xl";
+    size?: 'sm' | 'md' | 'lg' | 'xl';
   }
->(({ className, size = "md", ...props }, ref) => {
+>(({ className, size = 'md', ...props }, ref) => {
   const sizeClasses = {
-    sm: "h-6 w-6",
-    md: "h-10 w-10",
-    lg: "h-14 w-14",
-    xl: "h-20 w-20",
+    sm: 'h-6 w-6',
+    md: 'h-10 w-10',
+    lg: 'h-14 w-14',
+    xl: 'h-20 w-20',
   };
   return (
     <AvatarPrimitive.Root
       ref={ref}
       className={cn(
-        "relative flex shrink-0 overflow-hidden rounded-full",
+        'relative flex shrink-0 overflow-hidden rounded-full',
         sizeClasses[size],
-        className,
+        className
       )}
       {...props}
     />
@@ -35,7 +35,7 @@ const AvatarImage = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <AvatarPrimitive.Image
     ref={ref}
-    className={cn("aspect-square h-full w-full", className)}
+    className={cn('aspect-square h-full w-full', className)}
     {...props}
   />
 ));
@@ -48,8 +48,8 @@ const AvatarFallback = React.forwardRef<
   <AvatarPrimitive.Fallback
     ref={ref}
     className={cn(
-      "flex h-full w-full items-center justify-center rounded-full bg-muted",
-      className,
+      'flex h-full w-full items-center justify-center rounded-full bg-muted',
+      className
     )}
     {...props}
   />
