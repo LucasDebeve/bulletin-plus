@@ -19,3 +19,13 @@ export function listEvaluations(data: MatiereEvaluee[]): EvaluationComplete[] {
     });
   });
 }
+
+export function getIntranetAverage(data: EvaluationComplete[]): number {
+  const sum = data.reduce((acc, evaluation) => {
+    return acc + evaluation.note * evaluation.coefficient;
+  }, 0);
+  const totalCoef = data.reduce((acc, evaluation) => {
+    return acc + evaluation.coefficient;
+  }, 0);
+  return sum / totalCoef;
+}

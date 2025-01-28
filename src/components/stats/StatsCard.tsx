@@ -37,13 +37,13 @@ function StatsCard({
       <CardHeader className={'pb-0'}>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
-      <CardContent className={hasOldValue ? 'pb-0' : ''}>
+      <CardContent className={'pb-0'}>
         <CardTitle className={'text-4xl font-medium'}>
           {value.toLocaleString()}
         </CardTitle>
       </CardContent>
-      {hasOldValue && (
-        <CardFooter>
+      <CardFooter>
+        {hasOldValue && (
           <CardDescription>
             <span
               className={cn(
@@ -55,29 +55,33 @@ function StatsCard({
                     : 'text-destructive'
               )}
             >
-              {isPourcentage
-                ? `${pourcentage.toLocaleString()}% `
-                : Math.abs(value - oldValue).toLocaleString()}
+              {!isEqual && (
+                <>
+                  {isPourcentage
+                    ? `${pourcentage.toLocaleString()}% `
+                    : Math.abs(value - oldValue).toLocaleString()}
+                </>
+              )}
               {isPositive ? (
                 <>
                   d'augmentation
-                  <MoveUpRight className={'inline-block ml-1'} />
+                  <MoveUpRight className={'inline-block ml-1 h-5'} />
                 </>
               ) : isEqual ? (
                 <>
                   stable
-                  <Equal className={'inline-block ml-1'} />
+                  <Equal className={'inline-block ml-1 h-5'} />
                 </>
               ) : (
                 <>
                   de diminution
-                  <MoveDownRight className={'inline-block ml-1'} />
+                  <MoveDownRight className={'inline-block ml-1 h-5'} />
                 </>
               )}
             </span>
           </CardDescription>
-        </CardFooter>
-      )}
+        )}
+      </CardFooter>
     </Card>
   );
 }

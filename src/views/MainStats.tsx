@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { DataTable } from '@/components/notes/data-table.tsx';
 import { columns } from '@/components/notes/columns.tsx';
 import { Competence, Matiere, MatiereEvaluee } from '@/types/notes.ts';
-import { listEvaluations } from '@/lib/utils.ts';
+import { getIntranetAverage, listEvaluations } from '@/lib/utils.ts';
 import { EvaluationComplete } from '@/types/notes';
 
 function MainStats() {
@@ -16,6 +16,8 @@ function MainStats() {
 
   const [evaluations, setEvaluations] = useState([] as EvaluationComplete[]);
 
+  const [moyenneIntranet, setMoyenneIntranet] = useState(0);
+
   useEffect(() => {
     fetchNotes(
       import.meta.env.VITE_API_USERNAME as string,
@@ -26,6 +28,8 @@ function MainStats() {
       setMatieres(data[2]);
       // Use matieresEvaluees, competences, matieres as needed
       setEvaluations(listEvaluations(data[0]));
+
+      setMoyenneIntranet(getIntranetAverage(listEvaluations(data[0])));
     });
   }, []);
   return (
@@ -35,7 +39,11 @@ function MainStats() {
         <StatsCard
           description={'Moyenne générale'}
           value={16.5}
-          oldValue={16.49}
+          oldValue={16.1}
+        />
+        <StatsCard
+          description={"Moyenne générale de l'intranet"}
+          value={moyenneIntranet}
         />
       </div>
       <DataTable columns={columns} data={evaluations}></DataTable>
