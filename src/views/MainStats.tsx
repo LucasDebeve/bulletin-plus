@@ -28,6 +28,12 @@ function MainStats() {
     [] as number[]
   );
 
+  const [totalCoefsCompetences, setTotalCoefsCompetences] = useState(0);
+  const [totalAverageCompetences, setTotalAverageCompetences] = useState(0);
+  const [oldTotalCoefsCompetences, setOldTotalCoefsCompetences] = useState(0);
+  const [oldTotalAverageCompetences, setOldTotalAverageCompetences] =
+    useState(0);
+
   useEffect(() => {
     fetchNotes(
       import.meta.env.VITE_API_USERNAME as string,
@@ -48,6 +54,7 @@ function MainStats() {
       const oldMatieresAverages = removeDoublonsMatieresAverages(
         getMatieresAverages(old_data[0], old_data[2])
       );
+
       data[1].forEach((competence) => {
         let sumCoef = 0;
         const sumAverage = matieresAverages.reduce(
@@ -60,6 +67,13 @@ function MainStats() {
             return acc + coefMatiere.average * coefMatiere.coef;
           },
           0
+        );
+
+        setTotalCoefsCompetences(
+          (totalCoefsCompetences) => totalCoefsCompetences + sumCoef
+        );
+        setTotalAverageCompetences(
+          (totalAverageCompetences) => totalAverageCompetences + sumAverage
         );
 
         setCompetencesAverages((competencesAverages) => [
@@ -81,6 +95,13 @@ function MainStats() {
           0
         );
 
+        setOldTotalCoefsCompetences(
+          (totalCoefsCompetences) => totalCoefsCompetences + sumCoef
+        );
+        setOldTotalAverageCompetences(
+          (totalAverageCompetences) => totalAverageCompetences + sumAverage
+        );
+
         setOldCompetencesAverages((oldCompetencesAverages) => [
           ...oldCompetencesAverages,
           sumAverage / sumCoef,
@@ -99,8 +120,8 @@ function MainStats() {
         />
         <StatsCard
           description={'Moyenne générale'}
-          value={16.5}
-          oldValue={16.1}
+          value={totalAverageCompetences / totalCoefsCompetences}
+          oldValue={oldTotalAverageCompetences / oldTotalCoefsCompetences}
         />
         <StatsCard
           description={"Moyenne générale de l'intranet"}
