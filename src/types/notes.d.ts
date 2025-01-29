@@ -30,3 +30,15 @@ export type EvaluationComplete = {
   coefficient: number;
   matiere: Matiere;
 };
+
+export type MatiereAverage = {
+  matiere: Matiere;
+  average: number;
+};
+
+export type MatiereCompleteForOneCompetence = {
+  matiere: string;
+  average: number;
+  coef: number;
+  ue: number;
+};
