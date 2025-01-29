@@ -1,153 +1,152 @@
-import StatsCard from '@/components/stats/StatsCard.tsx';
-import { fetchNotes } from '@/lib/api.ts';
-import { useEffect, useState } from 'react';
-import { DataTable } from '@/components/notes/data-table.tsx';
-import { columns } from '@/components/notes/columns.tsx';
-import { Competence } from '@/types/notes.ts';
+import { useMemo } from 'react';
+import StatsCard from '@/components/stats/StatsCard';
+import { DataTable } from '@/components/notes/data-table';
+import { columns } from '@/components/notes/columns';
 import {
-  getCoefMatiereForCompetence,
+  calculateCompetenceAverages,
   getIntranetAverage,
   getMatieresAverages,
   listEvaluations,
   removeDoublonsMatieresAverages,
-} from '@/lib/utils.ts';
-import { EvaluationComplete } from '@/types/notes';
+} from '@/lib/utils';
+import { AlertCircle } from 'lucide-react';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { useNotes } from '@/hooks/use-notes.ts';
 
 function MainStats() {
-  const [competences, setCompetences] = useState([] as Competence[]);
-  const [evaluations, setEvaluations] = useState([] as EvaluationComplete[]);
-  const [oldEvaluations, setOldEvaluations] = useState(
-    [] as EvaluationComplete[]
-  );
-  const [moyenneIntranet, setMoyenneIntranet] = useState(0);
-  const [oldMoyenneIntranet, setOldMoyenneIntranet] = useState(0);
-  const [competencesAverages, setCompetencesAverages] = useState(
-    [] as number[]
-  );
-  const [oldCompetencesAverages, setOldCompetencesAverages] = useState(
-    [] as number[]
-  );
+  const { data: notesData, isLoading, error } = useNotes();
 
-  const [totalCoefsCompetences, setTotalCoefsCompetences] = useState(0);
-  const [totalAverageCompetences, setTotalAverageCompetences] = useState(0);
-  const [oldTotalCoefsCompetences, setOldTotalCoefsCompetences] = useState(0);
-  const [oldTotalAverageCompetences, setOldTotalAverageCompetences] =
-    useState(0);
+  const {
+    evaluations,
+    oldEvaluations,
+    competences,
+    competenceAverages,
+    oldCompetenceAverages,
+    generalAverage,
+    oldGeneralAverage,
+    intranetAverage,
+    oldIntranetAverage,
+  } = useMemo(() => {
+    if (!notesData) {
+      return {
+        evaluations: [],
+        oldEvaluations: [],
+        competences: [],
+        competenceAverages: [],
+        oldCompetenceAverages: [],
+        generalAverage: 0,
+        oldGeneralAverage: 0,
+        intranetAverage: 0,
+        oldIntranetAverage: 0,
+      };
+    }
 
-  useEffect(() => {
-    fetchNotes(
-      import.meta.env.VITE_API_USERNAME as string,
-      import.meta.env.VITE_API_PASSWORD as string
-    ).then(({ old_data, data }) => {
-      setCompetences(data[1]);
+    const { data, old_data } = notesData;
 
-      const evaluationsTemp = listEvaluations(data[0]);
-      const oldEvaluationsTemp = listEvaluations(old_data[0]);
-      setEvaluations(evaluationsTemp);
-      setMoyenneIntranet(getIntranetAverage(evaluationsTemp));
-      setOldEvaluations(oldEvaluationsTemp);
-      setOldMoyenneIntranet(getIntranetAverage(oldEvaluationsTemp));
+    const currentEvals = listEvaluations(data[0]);
+    const oldEvals = listEvaluations(old_data[0]);
 
-      const matieresAverages = removeDoublonsMatieresAverages(
-        getMatieresAverages(data[0], data[2])
-      );
-      const oldMatieresAverages = removeDoublonsMatieresAverages(
-        getMatieresAverages(old_data[0], old_data[2])
-      );
+    const matieresAverages = removeDoublonsMatieresAverages(
+      getMatieresAverages(data[0], data[2])
+    );
+    const oldMatieresAverages = removeDoublonsMatieresAverages(
+      getMatieresAverages(old_data[0], old_data[2])
+    );
 
-      data[1].forEach((competence) => {
-        let sumCoef = 0;
-        const sumAverage = matieresAverages.reduce(
-          (acc: number, matiereAverage) => {
-            const coefMatiere = getCoefMatiereForCompetence(
-              matiereAverage,
-              competence.id
-            );
-            sumCoef += coefMatiere.coef;
-            return acc + coefMatiere.average * coefMatiere.coef;
-          },
-          0
-        );
+    const compAverages = calculateCompetenceAverages(data[1], matieresAverages);
+    const oldCompAverages = calculateCompetenceAverages(
+      old_data[1],
+      oldMatieresAverages
+    );
 
-        setTotalCoefsCompetences(
-          (totalCoefsCompetences) => totalCoefsCompetences + sumCoef
-        );
-        setTotalAverageCompetences(
-          (totalAverageCompetences) => totalAverageCompetences + sumAverage
-        );
+    const totalWeightedAverage = compAverages.reduce(
+      (sum, curr) => sum + curr.totalWeightedAverage,
+      0
+    );
+    const totalCoef = compAverages.reduce(
+      (sum, curr) => sum + curr.totalCoef,
+      0
+    );
 
-        setCompetencesAverages((competencesAverages) => [
-          ...competencesAverages,
-          sumAverage / sumCoef,
-        ]);
-      });
-      old_data[1].forEach((competence) => {
-        let sumCoef = 0;
-        const sumAverage = oldMatieresAverages.reduce(
-          (acc: number, matiereAverage) => {
-            const coefMatiere = getCoefMatiereForCompetence(
-              matiereAverage,
-              competence.id
-            );
-            sumCoef += coefMatiere.coef;
-            return acc + coefMatiere.average * coefMatiere.coef;
-          },
-          0
-        );
+    const oldTotalWeightedAverage = oldCompAverages.reduce(
+      (sum, curr) => sum + curr.totalWeightedAverage,
+      0
+    );
+    const oldTotalCoef = oldCompAverages.reduce(
+      (sum, curr) => sum + curr.totalCoef,
+      0
+    );
 
-        setOldTotalCoefsCompetences(
-          (totalCoefsCompetences) => totalCoefsCompetences + sumCoef
-        );
-        setOldTotalAverageCompetences(
-          (totalAverageCompetences) => totalAverageCompetences + sumAverage
-        );
+    return {
+      evaluations: currentEvals,
+      oldEvaluations: oldEvals,
+      competences: data[1],
+      competenceAverages: compAverages,
+      oldCompetenceAverages: oldCompAverages,
+      generalAverage: totalCoef === 0 ? 0 : totalWeightedAverage / totalCoef,
+      oldGeneralAverage:
+        oldTotalCoef === 0 ? 0 : oldTotalWeightedAverage / oldTotalCoef,
+      intranetAverage: getIntranetAverage(currentEvals),
+      oldIntranetAverage: getIntranetAverage(oldEvals),
+    };
+  }, [notesData]);
 
-        setOldCompetencesAverages((oldCompetencesAverages) => [
-          ...oldCompetencesAverages,
-          sumAverage / sumCoef,
-        ]);
-      });
-    });
-  }, []);
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        Chargement...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <Alert variant="destructive">
+        <AlertCircle className="h-4 w-4" />
+        <AlertTitle>Erreur</AlertTitle>
+        <AlertDescription>
+          Une erreur s'est produite lors du chargement des données.
+        </AlertDescription>
+      </Alert>
+    );
+  }
 
   return (
-    <main className={'pt-10 pb-4 space-y-4'}>
-      <div className={'grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4'}>
+    <main className="pt-10 pb-4 space-y-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
         <StatsCard
-          description={'Nombres de notes'}
+          description="Nombres de notes"
           value={evaluations.length}
           oldValue={oldEvaluations.length}
         />
         <StatsCard
-          description={'Moyenne générale'}
-          value={
-            totalCoefsCompetences === 0
-              ? 0
-              : totalAverageCompetences / totalCoefsCompetences
-          }
-          oldValue={
-            oldTotalCoefsCompetences === 0
-              ? 0
-              : oldTotalAverageCompetences / oldTotalCoefsCompetences
-          }
+          description="Moyenne générale"
+          value={generalAverage}
+          oldValue={oldGeneralAverage}
         />
         <StatsCard
-          description={"Moyenne générale de l'intranet"}
-          value={moyenneIntranet}
-          oldValue={oldMoyenneIntranet}
+          description="Moyenne générale de l'intranet"
+          value={intranetAverage}
+          oldValue={oldIntranetAverage}
         />
       </div>
-      <div className={`grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-6`}>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-6">
         {competences.map((competence) => (
           <StatsCard
             key={competence.id}
             description={competence.name}
-            value={competencesAverages[competence.id] || 0}
-            oldValue={oldCompetencesAverages[competence.id] || 0}
+            value={
+              competenceAverages.find((ca) => ca.id === competence.id)
+                ?.average || 0
+            }
+            oldValue={
+              oldCompetenceAverages.find((ca) => ca.id === competence.id)
+                ?.average || 0
+            }
           />
         ))}
       </div>
-      <DataTable columns={columns} data={evaluations}></DataTable>
+      <DataTable columns={columns} data={evaluations} />
     </main>
   );
 }

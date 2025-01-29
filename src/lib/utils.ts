@@ -6,6 +6,7 @@ import {
   MatiereAverage,
   Matiere,
   MatiereCompleteForOneCompetence,
+  Competence,
 } from '@/types/notes';
 
 export function cn(...inputs: ClassValue[]) {
@@ -69,6 +70,38 @@ export function getMatieresAverages(
         matiereEvaluee.evaluations.reduce((acc, evaluation) => {
           return acc + evaluation.coefficient;
         }, 0),
+    };
+  });
+}
+
+export function calculateCompetenceAverages(
+  competences: Competence[],
+  matieresAverages: ReturnType<typeof getMatieresAverages>
+): CompetenceAverage[] {
+  return competences.map((competence) => {
+    const result = matieresAverages.reduce(
+      (acc, matiereAverage) => {
+        const coefMatiere = getCoefMatiereForCompetence(
+          matiereAverage,
+          competence.id
+        );
+        return {
+          totalCoef: acc.totalCoef + coefMatiere.coef,
+          totalWeightedAverage:
+            acc.totalWeightedAverage + coefMatiere.average * coefMatiere.coef,
+        };
+      },
+      { totalCoef: 0, totalWeightedAverage: 0 }
+    );
+
+    return {
+      id: competence.id,
+      totalCoef: result.totalCoef,
+      totalWeightedAverage: result.totalWeightedAverage,
+      average:
+        result.totalCoef === 0
+          ? 0
+          : result.totalWeightedAverage / result.totalCoef,
     };
   });
 }
