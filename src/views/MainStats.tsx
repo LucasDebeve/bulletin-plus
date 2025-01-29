@@ -26,6 +26,7 @@ function MainStats() {
     oldGeneralAverage,
     intranetAverage,
     oldIntranetAverage,
+    isYearValidated,
   } = useMemo(() => {
     if (!notesData) {
       return {
@@ -38,6 +39,7 @@ function MainStats() {
         oldGeneralAverage: 0,
         intranetAverage: 0,
         oldIntranetAverage: 0,
+        isYearValidated: false,
       };
     }
 
@@ -59,6 +61,13 @@ function MainStats() {
       oldMatieresAverages
     );
 
+    const validCompetences = data[1].filter((competence) => {
+      const competenceAverage = compAverages.find(
+        (ca) => ca.id === competence.id
+      );
+      return competenceAverage ? competenceAverage.totalCoef > 0 : false;
+    });
+
     const totalWeightedAverage = compAverages.reduce(
       (sum, curr) => sum + curr.totalWeightedAverage,
       0
@@ -77,10 +86,20 @@ function MainStats() {
       0
     );
 
+    // Vérifier si l'année scolaire est validée
+    // il faut au maximum 2 compétences en dessous de 10
+    const isYearValidated =
+      validCompetences.filter((competence) => {
+        const competenceAverage = compAverages.find(
+          (ca) => ca.id === competence.id
+        );
+        return competenceAverage ? competenceAverage.average < 10 : false;
+      }).length <= 2;
+
     return {
       evaluations: currentEvals,
       oldEvaluations: oldEvals,
-      competences: data[1],
+      competences: validCompetences,
       competenceAverages: compAverages,
       oldCompetenceAverages: oldCompAverages,
       generalAverage: totalCoef === 0 ? 0 : totalWeightedAverage / totalCoef,
@@ -88,6 +107,7 @@ function MainStats() {
         oldTotalCoef === 0 ? 0 : oldTotalWeightedAverage / oldTotalCoef,
       intranetAverage: getIntranetAverage(currentEvals),
       oldIntranetAverage: getIntranetAverage(oldEvals),
+      isYearValidated,
     };
   }, [notesData]);
 
@@ -101,19 +121,21 @@ function MainStats() {
 
   if (error) {
     return (
-      <Alert variant="destructive">
-        <AlertCircle className="h-4 w-4" />
-        <AlertTitle>Erreur</AlertTitle>
-        <AlertDescription>
-          Une erreur s'est produite lors du chargement des données.
-        </AlertDescription>
-      </Alert>
+      <div className="flex justify-center items-center h-screen">
+        <Alert variant="destructive">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Erreur</AlertTitle>
+          <AlertDescription>
+            Une erreur s'est produite lors du chargement des données.
+          </AlertDescription>
+        </Alert>
+      </div>
     );
   }
 
   return (
     <main className="pt-10 pb-4 space-y-4">
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
         <StatsCard
           description="Nombres de notes"
           value={evaluations.length}
@@ -129,8 +151,12 @@ function MainStats() {
           value={intranetAverage}
           oldValue={oldIntranetAverage}
         />
+        <StatsCard
+          description="Année scolaire validée"
+          value={isYearValidated ? 1 : 0}
+        />
       </div>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-6">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-5">
         {competences.map((competence) => (
           <StatsCard
             key={competence.id}
