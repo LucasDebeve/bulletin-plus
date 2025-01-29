@@ -12,9 +12,6 @@ function MainStats() {
   const [matieresEvaluees, setMatieresEvaluees] = useState(
     [] as MatiereEvaluee[]
   );
-  const [oldMatiereEvaluees, setOldMatiereEvaluees] = useState(
-    [] as MatiereEvaluee[]
-  );
   const [competences, setCompetences] = useState([] as Competence[]);
   const [evaluations, setEvaluations] = useState([] as EvaluationComplete[]);
   const [oldEvaluations, setOldEvaluations] = useState(
@@ -29,7 +26,6 @@ function MainStats() {
       import.meta.env.VITE_API_PASSWORD as string
     ).then(({ old_data, data }) => {
       setMatieresEvaluees(data[0]);
-      setOldMatiereEvaluees(old_data[0]);
       setCompetences(data[1]);
       setMatieres(data[2]);
 
