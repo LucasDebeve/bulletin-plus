@@ -122,11 +122,12 @@ function MainStats() {
   if (error) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <Alert variant="destructive">
+        <Alert variant="destructive" role={'alert'} aria-live={'assertive'}>
           <AlertCircle className="h-4 w-4" />
           <AlertTitle>Erreur</AlertTitle>
           <AlertDescription>
-            Une erreur s'est produite lors du chargement des données.
+            Une erreur s'est produite lors du chargement des données. Veuillez
+            réessayer ultérieurement.
           </AlertDescription>
         </Alert>
       </div>
@@ -135,42 +136,58 @@ function MainStats() {
 
   return (
     <main className="pt-10 pb-4 space-y-4">
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div
+        className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4"
+        role={'group'}
+        aria-label={'Statistiques principales'}
+      >
         <StatsCard
           description="Nombres de notes"
           value={evaluations.length}
           oldValue={oldEvaluations.length}
+          aria-label={`Nombre total de notes : ${evaluations.length}, précédemment ${oldEvaluations.length}`}
         />
         <StatsCard
           description="Moyenne générale"
           value={generalAverage}
           oldValue={oldGeneralAverage}
+          aria-label={`Moyenne générale : ${generalAverage.toFixed(2)}, précédemment ${oldGeneralAverage.toFixed(2)}`}
         />
         <StatsCard
           description="Moyenne générale de l'intranet"
           value={intranetAverage}
           oldValue={oldIntranetAverage}
+          aria-label={`Moyenne générale de l'intranet : ${intranetAverage.toFixed(2)}, précédemment ${oldIntranetAverage.toFixed(2)}`}
         />
         <StatsCard
           description="Année scolaire validée"
           value={isYearValidated ? 1 : 0}
+          aria-label={`Année scolaire validée : ${isYearValidated ? 'Oui' : 'Non'}`}
         />
       </div>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-5">
-        {competences.map((competence) => (
-          <StatsCard
-            key={competence.id}
-            description={competence.name}
-            value={
-              competenceAverages.find((ca) => ca.id === competence.id)
-                ?.average || 0
-            }
-            oldValue={
-              oldCompetenceAverages.find((ca) => ca.id === competence.id)
-                ?.average || 0
-            }
-          />
-        ))}
+      <div
+        className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-5"
+        role="group"
+        aria-label="Moyennes par compétence"
+      >
+        {competences.map((competence) => {
+          const currentAverage =
+            competenceAverages.find((ca) => ca.id === competence.id)?.average ||
+            0;
+          const previousAverage =
+            oldCompetenceAverages.find((ca) => ca.id === competence.id)
+              ?.average || 0;
+
+          return (
+            <StatsCard
+              key={competence.id}
+              description={competence.name}
+              value={currentAverage}
+              oldValue={previousAverage}
+              aria-label={`${competence.name} : moyenne actuelle ${currentAverage.toFixed(2)}, précédente ${previousAverage.toFixed(2)}`}
+            />
+          );
+        })}
       </div>
       <DataTable columns={columns} data={evaluations} />
     </main>

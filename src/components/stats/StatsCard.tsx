@@ -14,6 +14,7 @@ type StatsCardProps = {
   description: string;
   oldValue?: number;
   isPourcentage?: boolean;
+  'aria-label'?: string;
 };
 
 function StatsCard({
@@ -21,6 +22,7 @@ function StatsCard({
   description,
   oldValue,
   isPourcentage = true,
+  'aria-label': ariaLabel,
 }: StatsCardProps) {
   const hasOldValue = oldValue !== undefined;
   if (oldValue === undefined) {
@@ -33,7 +35,7 @@ function StatsCard({
   // Remove trailing zeros
 
   return (
-    <Card>
+    <Card aria-label={ariaLabel}>
       <CardHeader className={'pb-0'}>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
