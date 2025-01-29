@@ -120,8 +120,16 @@ function MainStats() {
         />
         <StatsCard
           description={'Moyenne générale'}
-          value={totalAverageCompetences / totalCoefsCompetences}
-          oldValue={oldTotalAverageCompetences / oldTotalCoefsCompetences}
+          value={
+            totalCoefsCompetences === 0
+              ? 0
+              : totalAverageCompetences / totalCoefsCompetences
+          }
+          oldValue={
+            oldTotalCoefsCompetences === 0
+              ? 0
+              : oldTotalAverageCompetences / oldTotalCoefsCompetences
+          }
         />
         <StatsCard
           description={"Moyenne générale de l'intranet"}
