@@ -12,9 +12,12 @@ import {
 import { AlertCircle } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useNotes } from '@/hooks/use-notes.ts';
+import { useAuth } from '@/hooks/use-auth.ts';
 
 function MainStats() {
-  const { data: notesData, isLoading, error } = useNotes();
+  const { credentials } = useAuth();
+
+  const { data: notesData, isLoading, error } = useNotes(credentials);
 
   const {
     evaluations,
@@ -87,7 +90,7 @@ function MainStats() {
     );
 
     // Vérifier si l'année scolaire est validée
-    // il faut au maximum 2 compétences en dessous de 10
+    // Il faut au maximum 2 compétences en dessous de 10
     const isYearValidated =
       validCompetences.filter((competence) => {
         const competenceAverage = compAverages.find(

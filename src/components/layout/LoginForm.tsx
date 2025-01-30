@@ -7,18 +7,17 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
-import { toast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input.tsx';
+import { useAuth } from '@/hooks/use-auth.ts';
 
 const FormSchema = z.object({
   username: z.string().min(2, {
@@ -30,6 +29,8 @@ const FormSchema = z.object({
 });
 
 function LoginForm() {
+  const { setCredentials } = useAuth();
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -38,12 +39,10 @@ function LoginForm() {
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast({
-      title: 'Connexion en cours...',
-      description: `Nom d'utilisateur: ${data.username}`,
-    });
-  }
+  const onSubmit = (data: z.infer<typeof FormSchema>) => {
+    console.log('Submit');
+    setCredentials(data);
+  };
 
   return (
     <DialogContent>
@@ -51,7 +50,7 @@ function LoginForm() {
         {/* Formulaire de connexion */}
         <DialogTitle>Connexion</DialogTitle>
         <DialogDescription>
-          Connectez-vous pour accéder à votre compte.
+          Connectez-vous avec vos identifiants de l'intranet.
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
@@ -64,18 +63,15 @@ function LoginForm() {
                   <FormItem>
                     <FormLabel>Nom d'utilisateur</FormLabel>
                     <FormControl>
-                      <Input placeholder="shadcn" {...field} />
+                      <Input {...field} />
                     </FormControl>
-                    <FormDescription>
-                      Ceci est votre identifiant à l'intranet.
-                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
               <FormField
                 control={form.control}
-                name="password"
+                name={'password'}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Mot de passe</FormLabel>
