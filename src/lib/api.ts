@@ -22,20 +22,15 @@ export async function fetchNotes(
   console.log(result);
 
   // Mettre en cache dans le localStorage
-  return result
-    .json()
-    .then((data: ApiData) => {
-      // si la date n'est pas la même que celle d'aujourd'hui
-      const old_data: ApiData = JSON.parse(localStorage.getItem('data') ?? '');
-      if (localStorage.getItem('date') !== new Date().toDateString()) {
-        localStorage.setItem('data', JSON.stringify(data));
-        localStorage.setItem('date', new Date().toDateString());
-      }
+  return result.json().then((data: ApiData) => {
+    console.log('Success');
+    // si la date n'est pas la même que celle d'aujours'hui
+    const old_data: ApiData = JSON.parse(localStorage.getItem('data') ?? '');
+    if (localStorage.getItem('date') !== new Date().toDateString()) {
+      localStorage.setItem('data', JSON.stringify(data));
+      localStorage.setItem('date', new Date().toDateString());
+    }
 
-      return { old_data, data };
-    })
-    .catch((error) => {
-      console.log(result.body);
-      console.error('Error:', error);
-    });
+    return { old_data, data };
+  });
 }
