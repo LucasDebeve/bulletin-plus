@@ -26,6 +26,7 @@ export async function fetchNotes(
       localStorage.setItem('data', JSON.stringify(data));
       localStorage.setItem('date', new Date().toDateString());
     }
+
     return { old_data, data };
   });
 }

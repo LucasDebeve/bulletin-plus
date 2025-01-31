@@ -10,11 +10,19 @@ import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import ThemeRadioGroup from '@/components/theme-radio-group';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import LoginForm from '@/components/layout/LoginForm.tsx';
+import { useState } from 'react';
 
 function Header() {
+  const [open, setOpen] = useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+    console.log('Dialog closed');
+  };
+
   return (
     <div className={'fixed top-2 left-2 right-2 z-10 max-w-[1280px] mx-auto'}>
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <Menubar className={'flex items-center px-4 shadow-lg rounded-md'}>
           <span className={'text-md font-semibold ml-2 mr-4'}>
             Bulletin <span className="text-xl">+</span>
@@ -59,7 +67,7 @@ function Header() {
             </MenubarContent>
           </MenubarMenu>
         </Menubar>
-        <LoginForm />
+        <LoginForm handleClose={handleClose} />
       </Dialog>
     </div>
   );
