@@ -32,6 +32,7 @@ export async function fetchNotes(
       return { old_data, data };
     })
     .catch((error) => {
+      console.log(result.body);
       console.error('Error:', error);
     });
 }
