@@ -127,7 +127,9 @@ function MainStats() {
       <div className="flex justify-center items-center h-screen">
         <Alert variant="destructive" role={'alert'} aria-live={'assertive'}>
           <AlertCircle className="h-4 w-4" />
-          <AlertTitle>Erreur</AlertTitle>
+          <AlertTitle>
+            {error.name || 'Erreur'} {error.stack}
+          </AlertTitle>
           <AlertDescription>
             {error.message || 'Une erreur est survenue'}
           </AlertDescription>
