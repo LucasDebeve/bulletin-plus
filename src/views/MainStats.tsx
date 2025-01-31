@@ -89,8 +89,8 @@ function MainStats() {
       0
     );
 
-    // Vérifier si l'année scolaire est validée
-    // Il faut au maximum 2 compétences en dessous de 10
+    // Vérifier si l'année scolaire est validée.
+    // Il faut au maximum 2 compétences en dessous de 10.
     const isYearValidated =
       validCompetences.filter((competence) => {
         const competenceAverage = compAverages.find(
@@ -127,9 +127,7 @@ function MainStats() {
       <div className="flex justify-center items-center h-screen">
         <Alert variant="destructive" role={'alert'} aria-live={'assertive'}>
           <AlertCircle className="h-4 w-4" />
-          <AlertTitle>
-            {error.name || 'Erreur'} {error.stack}
-          </AlertTitle>
+          <AlertTitle>Erreur</AlertTitle>
           <AlertDescription>
             {error.message || 'Une erreur est survenue'}
           </AlertDescription>
