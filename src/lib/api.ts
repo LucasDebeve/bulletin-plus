@@ -31,9 +31,6 @@ export async function fetchNotes(
       localStorage.setItem('date', new Date().toDateString());
     }
 
-    console.log('data', data);
-    console.log('old_data', old_data);
-
     return { old_data, data };
   });
 }
