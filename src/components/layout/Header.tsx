@@ -17,7 +17,6 @@ function Header() {
 
   const handleClose = () => {
     setOpen(false);
-    console.log('Dialog closed');
   };
 
   return (

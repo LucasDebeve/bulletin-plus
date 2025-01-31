@@ -129,8 +129,7 @@ function MainStats() {
           <AlertCircle className="h-4 w-4" />
           <AlertTitle>Erreur</AlertTitle>
           <AlertDescription>
-            Une erreur s'est produite lors du chargement des données. Veuillez
-            réessayer ultérieurement.
+            {error.message || 'Une erreur est survenue'}
           </AlertDescription>
         </Alert>
       </div>
