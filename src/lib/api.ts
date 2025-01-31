@@ -12,11 +12,14 @@ export async function fetchNotes(
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
       Accept: 'application/json',
+      'Permissions-Policy': 'interest-cohort=()',
     },
     redirect: 'follow',
     referrerPolicy: 'no-referrer',
     body: new URLSearchParams({ username, password }).toString(),
   });
+
+  console.log(result);
 
   // Mettre en cache dans le localStorage
   return result
