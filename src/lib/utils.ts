@@ -14,6 +14,10 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function listEvaluations(data: MatiereEvaluee[]): EvaluationComplete[] {
+  if (data.length === 0) {
+    return [];
+  }
+
   return data.flatMap((matiereEvaluee) => {
     return matiereEvaluee.evaluations.map((evaluation) => {
       return {

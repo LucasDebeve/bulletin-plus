@@ -31,7 +31,7 @@ function MainStats() {
     oldIntranetAverage,
     isYearValidated,
   } = useMemo(() => {
-    if (!notesData) {
+    if (!notesData || !notesData.data) {
       return {
         evaluations: [],
         oldEvaluations: [],
@@ -45,24 +45,14 @@ function MainStats() {
         isYearValidated: false,
       };
     }
-
     const { data, old_data } = notesData;
 
     const currentEvals = listEvaluations(data[0]);
-    const oldEvals = listEvaluations(old_data[0]);
-
     const matieresAverages = removeDoublonsMatieresAverages(
       getMatieresAverages(data[0], data[2])
     );
-    const oldMatieresAverages = removeDoublonsMatieresAverages(
-      getMatieresAverages(old_data[0], old_data[2])
-    );
 
     const compAverages = calculateCompetenceAverages(data[1], matieresAverages);
-    const oldCompAverages = calculateCompetenceAverages(
-      old_data[1],
-      oldMatieresAverages
-    );
 
     const validCompetences = data[1].filter((competence) => {
       const competenceAverage = compAverages.find(
@@ -80,15 +70,6 @@ function MainStats() {
       0
     );
 
-    const oldTotalWeightedAverage = oldCompAverages.reduce(
-      (sum, curr) => sum + curr.totalWeightedAverage,
-      0
-    );
-    const oldTotalCoef = oldCompAverages.reduce(
-      (sum, curr) => sum + curr.totalCoef,
-      0
-    );
-
     // Vérifier si l'année scolaire est validée.
     // Il faut au maximum 2 compétences en dessous de 10.
     const isYearValidated =
@@ -98,6 +79,42 @@ function MainStats() {
         );
         return competenceAverage ? competenceAverage.average < 10 : false;
       }).length <= 2;
+
+    console.log(old_data);
+
+    // verifier si old_data est undefined[]
+    if (old_data === undefined) {
+      return {
+        evaluations: currentEvals,
+        oldEvaluations: currentEvals,
+        competences: validCompetences,
+        competenceAverages: compAverages,
+        oldCompetenceAverages: compAverages,
+        generalAverage: totalCoef === 0 ? 0 : totalWeightedAverage / totalCoef,
+        oldGeneralAverage:
+          totalCoef === 0 ? 0 : totalWeightedAverage / totalCoef,
+        intranetAverage: getIntranetAverage(currentEvals),
+        oldIntranetAverage: getIntranetAverage(currentEvals),
+        isYearValidated,
+      };
+    }
+
+    const oldEvals = listEvaluations(old_data[0] || []);
+    const oldMatieresAverages = removeDoublonsMatieresAverages(
+      getMatieresAverages(old_data[0], old_data[2])
+    );
+    const oldCompAverages = calculateCompetenceAverages(
+      old_data[1],
+      oldMatieresAverages
+    );
+    const oldTotalWeightedAverage = oldCompAverages.reduce(
+      (sum, curr) => sum + curr.totalWeightedAverage,
+      0
+    );
+    const oldTotalCoef = oldCompAverages.reduce(
+      (sum, curr) => sum + curr.totalCoef,
+      0
+    );
 
     return {
       evaluations: currentEvals,
