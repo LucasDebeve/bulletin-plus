@@ -13,6 +13,7 @@ import { AlertCircle } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useNotes } from '@/hooks/use-notes.ts';
 import { useAuth } from '@/hooks/use-auth.ts';
+import BoolCard from '@/components/stats/BoolCard.tsx';
 
 function MainStats() {
   const { credentials } = useAuth();
@@ -178,9 +179,9 @@ function MainStats() {
           oldValue={oldIntranetAverage}
           aria-label={`Moyenne générale de l'intranet : ${intranetAverage.toFixed(2)}, précédemment ${oldIntranetAverage.toFixed(2)}`}
         />
-        <StatsCard
-          description="Année scolaire validée"
-          value={isYearValidated ? 1 : 0}
+        <BoolCard
+          description={`Année scolaire ${isYearValidated ? 'validée' : 'non validée'}`}
+          value={isYearValidated}
           aria-label={`Année scolaire validée : ${isYearValidated ? 'Oui' : 'Non'}`}
         />
       </div>

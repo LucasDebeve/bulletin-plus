@@ -1,13 +1,7 @@
-import {
-  Card,
-  CardHeader,
-  CardContent,
-  CardFooter,
-  CardDescription,
-  CardTitle,
-} from '@/components/ui/card';
+import { CardFooter, CardDescription } from '@/components/ui/card';
 import { MoveUpRight, MoveDownRight, Equal } from 'lucide-react';
 import { cn } from '@/lib/utils.ts';
+import TemplateCard from '@/components/stats/TemplateCard.tsx';
 
 type StatsCardProps = {
   value: number;
@@ -35,16 +29,12 @@ function StatsCard({
   // Remove trailing zeros
 
   return (
-    <Card aria-label={ariaLabel}>
-      <CardHeader className={'pb-0'}>
-        <CardDescription>{description}</CardDescription>
-      </CardHeader>
-      <CardContent className={'pb-0'}>
-        <CardTitle className={'text-4xl font-medium'}>
-          {value.toLocaleString()}
-        </CardTitle>
-      </CardContent>
-      <CardFooter>
+    <TemplateCard
+      title={value.toLocaleString()}
+      description={description}
+      aria-label={ariaLabel}
+    >
+      <CardFooter className={'px-1'}>
         {hasOldValue && (
           <CardDescription>
             <span
@@ -84,7 +74,7 @@ function StatsCard({
           </CardDescription>
         )}
       </CardFooter>
-    </Card>
+    </TemplateCard>
   );
 }
 
