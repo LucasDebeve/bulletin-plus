@@ -110,6 +110,14 @@ export function calculateCompetenceAverages(
   });
 }
 
+export function getBeforePipe(str: string): string {
+  return str.match(/(.*)\|/)?.[1] || '';
+}
+
+export function getAfterPipe(str: string): string {
+  return str.match(/\|(.*)/)?.[1] || '';
+}
+
 export function getCoefMatiereForCompetence(
   matiere: MatiereAverage,
   competenceId: number

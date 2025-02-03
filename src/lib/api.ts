@@ -22,21 +22,30 @@ export async function fetchNotes(
   // Mettre en cache dans le localStorage
   return result.json().then((data: ApiData) => {
     // si la date n'est pas la même que celle d'aujours'hui
-    const old_data: ApiData | [] = JSON.parse(
+    let old_data: ApiData | [] = JSON.parse(
       localStorage.getItem('data') || '[]'
     );
+    console.log(old_data);
     if (
       !localStorage.getItem('date') ||
       localStorage.getItem('date') !== new Date().toDateString()
     ) {
+      console.log('On met à jour le cache');
       localStorage.setItem('data', JSON.stringify(data));
       localStorage.setItem('date', new Date().toDateString());
+    } else {
+      old_data = [[], [], []] as ApiData;
+    }
+    if (old_data.length === 0) {
+      old_data = [[], [], []] as ApiData;
     }
 
-    if (old_data.length === 0) {
-      return { old_data: data, data };
-    } else {
-      return { old_data, data };
-    }
+    return { old_data, data };
+
+    // if (old_data.length === 0) {
+    //   return { old_data: data, data };
+    // } else {
+    //   return { old_data, data };
+    // }
   });
 }

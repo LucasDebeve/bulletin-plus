@@ -14,6 +14,8 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useNotes } from '@/hooks/use-notes.ts';
 import { useAuth } from '@/hooks/use-auth.ts';
 import BoolCard from '@/components/stats/BoolCard.tsx';
+import RadarMeansMatieres from '@/components/charts/RadarMeansMatieres.tsx';
+import ChartCard from '@/components/stats/ChartCard.tsx';
 
 function MainStats() {
   const { credentials } = useAuth();
@@ -24,6 +26,8 @@ function MainStats() {
     evaluations,
     oldEvaluations,
     competences,
+    matieresAverages,
+    oldMatieresAverages,
     competenceAverages,
     oldCompetenceAverages,
     generalAverage,
@@ -36,6 +40,8 @@ function MainStats() {
       return {
         evaluations: [],
         oldEvaluations: [],
+        matieresAverages: [],
+        oldMatieresAverages: [],
         competences: [],
         competenceAverages: [],
         oldCompetenceAverages: [],
@@ -81,14 +87,14 @@ function MainStats() {
         return competenceAverage ? competenceAverage.average < 10 : false;
       }).length <= 2;
 
-    console.log(old_data);
-
-    // verifier si old_data est undefined[]
-    if (old_data === undefined) {
+    // verifier si old_data est vide
+    if (old_data[0].length === 0) {
       return {
         evaluations: currentEvals,
         oldEvaluations: currentEvals,
         competences: validCompetences,
+        matieresAverages: matieresAverages,
+        oldMatieresAverages: undefined,
         competenceAverages: compAverages,
         oldCompetenceAverages: compAverages,
         generalAverage: totalCoef === 0 ? 0 : totalWeightedAverage / totalCoef,
@@ -121,6 +127,8 @@ function MainStats() {
       evaluations: currentEvals,
       oldEvaluations: oldEvals,
       competences: validCompetences,
+      matieresAverages: matieresAverages,
+      oldMatieresAverages: oldMatieresAverages,
       competenceAverages: compAverages,
       oldCompetenceAverages: oldCompAverages,
       generalAverage: totalCoef === 0 ? 0 : totalWeightedAverage / totalCoef,
@@ -208,6 +216,23 @@ function MainStats() {
             />
           );
         })}
+      </div>
+      <div
+        className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3"
+        role="group"
+        aria-label="Moyennes par matière"
+      >
+        <StatsCard value={5} description={'Rien'} />
+        <ChartCard
+          title={'Moyennes par matière'}
+          aria-label={'Moyennes par matière'}
+          className="col-span-2"
+        >
+          <RadarMeansMatieres
+            data={matieresAverages ?? []}
+            old_data={oldMatieresAverages}
+          />
+        </ChartCard>
       </div>
       <DataTable columns={columns} data={evaluations} />
     </main>
