@@ -194,6 +194,23 @@ function MainStats() {
         />
       </div>
       <div
+        className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3"
+        role="group"
+        aria-label="Moyennes par matière"
+      >
+        <StatsCard value={5} description={'Rien'} />
+        <ChartCard
+          title={'Moyennes par matière'}
+          aria-label={'Moyennes par matière'}
+          className="col-span-2"
+        >
+          <RadarMeansMatieres
+            data={matieresAverages ?? []}
+            old_data={oldMatieresAverages}
+          />
+        </ChartCard>
+      </div>
+      <div
         className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-5"
         role="group"
         aria-label="Moyennes par compétence"
@@ -216,23 +233,6 @@ function MainStats() {
             />
           );
         })}
-      </div>
-      <div
-        className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3"
-        role="group"
-        aria-label="Moyennes par matière"
-      >
-        <StatsCard value={5} description={'Rien'} />
-        <ChartCard
-          title={'Moyennes par matière'}
-          aria-label={'Moyennes par matière'}
-          className="col-span-2"
-        >
-          <RadarMeansMatieres
-            data={matieresAverages ?? []}
-            old_data={oldMatieresAverages}
-          />
-        </ChartCard>
       </div>
       <DataTable columns={columns} data={evaluations} />
     </main>
