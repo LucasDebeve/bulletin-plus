@@ -19,21 +19,14 @@ export async function fetchNotes(
     body: new URLSearchParams({ username, password }).toString(),
   });
 
+  // TODO: Ne plus mettre en cache automatiquement (ajouter un bouton save)
   // Mettre en cache dans le localStorage
   return result.json().then((data: ApiData) => {
     // si la date n'est pas la même que celle d'aujours'hui
     let old_data: ApiData | [] = JSON.parse(
       localStorage.getItem('data') || '[]'
     );
-    if (
-      !localStorage.getItem('date') ||
-      localStorage.getItem('date') !== new Date().toDateString()
-    ) {
-      localStorage.setItem('data', JSON.stringify(data));
-      localStorage.setItem('date', new Date().toDateString());
-    } else {
-      old_data = [[], [], []] as ApiData;
-    }
+
     if (old_data.length === 0) {
       old_data = [[], [], []] as ApiData;
     }
