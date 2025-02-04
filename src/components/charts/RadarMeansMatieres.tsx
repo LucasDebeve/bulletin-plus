@@ -5,7 +5,7 @@ import {
 } from '@/components/ui/chart.tsx';
 import { Legend, PolarAngleAxis, PolarGrid, Radar, RadarChart } from 'recharts';
 import { type ChartConfig } from '@/components/ui/chart';
-import { MatiereAverage } from '@/types/notes';
+import { MergedMatieresAverage } from '@/types/notes';
 import { getBeforePipe } from '@/lib/utils.ts';
 
 const chartConfig = {
@@ -20,32 +20,11 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 function RadarMeansMatieres({
-  data,
-  old_data,
+  mergedData,
 }: {
-  data: MatiereAverage[];
-  old_data?: MatiereAverage[];
+  mergedData: MergedMatieresAverage[];
 }) {
-  const mergedData =
-    old_data?.map((matiere) => ({
-      matiere: matiere.matiere.matiere,
-      currentAverage: data.find(
-        (d) => d.matiere.matiere === matiere.matiere.matiere
-      )?.average,
-      oldAverage: matiere.average || null,
-    })) || [];
-  data.forEach((d) => {
-    const old = old_data?.find(
-      (od) => od.matiere.matiere === d.matiere.matiere
-    );
-    if (!old) {
-      mergedData.push({
-        matiere: d.matiere.matiere,
-        currentAverage: d.average,
-        oldAverage: null,
-      });
-    }
-  });
+  const old_data = mergedData.find((d) => d.oldAverage !== null);
 
   return (
     <ChartContainer config={chartConfig} className={'w-full'}>

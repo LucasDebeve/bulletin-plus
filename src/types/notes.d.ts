@@ -25,6 +25,13 @@ export type Matiere = {
 
 export type ApiData = [MatiereEvaluee[], Competence[], Matiere[]];
 
+export type MergedMatieresAverage = {
+  matiere: string;
+  currentAverage: number | undefined;
+  oldAverage: number | null;
+  coef: number;
+};
+
 export type EvaluationComplete = {
   note: number;
   coefficient: number;

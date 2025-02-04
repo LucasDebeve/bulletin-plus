@@ -7,6 +7,7 @@ import {
   getIntranetAverage,
   getMatieresAverages,
   listEvaluations,
+  mergeEvaluationsData,
   removeDoublonsMatieresAverages,
 } from '@/lib/utils';
 import { AlertCircle } from 'lucide-react';
@@ -16,6 +17,7 @@ import { useAuth } from '@/hooks/use-auth.ts';
 import BoolCard from '@/components/stats/BoolCard.tsx';
 import RadarMeansMatieres from '@/components/charts/RadarMeansMatieres.tsx';
 import ChartCard from '@/components/stats/ChartCard.tsx';
+import CorrelationChart from '@/components/charts/CorrelationChart.tsx';
 
 function MainStats() {
   const { credentials } = useAuth();
@@ -28,6 +30,7 @@ function MainStats() {
     competences,
     matieresAverages,
     oldMatieresAverages,
+    mergedMatieresAverages,
     competenceAverages,
     oldCompetenceAverages,
     generalAverage,
@@ -42,6 +45,7 @@ function MainStats() {
         oldEvaluations: [],
         matieresAverages: [],
         oldMatieresAverages: [],
+        mergedMatieresAverages: [],
         competences: [],
         competenceAverages: [],
         oldCompetenceAverages: [],
@@ -57,6 +61,11 @@ function MainStats() {
     const currentEvals = listEvaluations(data[0]);
     const matieresAverages = removeDoublonsMatieresAverages(
       getMatieresAverages(data[0], data[2])
+    );
+
+    let mergedMatieresAverages = mergeEvaluationsData(
+      matieresAverages,
+      undefined
     );
 
     const compAverages = calculateCompetenceAverages(data[1], matieresAverages);
@@ -95,6 +104,7 @@ function MainStats() {
         competences: validCompetences,
         matieresAverages: matieresAverages,
         oldMatieresAverages: undefined,
+        mergedMatieresAverages: mergedMatieresAverages,
         competenceAverages: compAverages,
         oldCompetenceAverages: compAverages,
         generalAverage: totalCoef === 0 ? 0 : totalWeightedAverage / totalCoef,
@@ -110,6 +120,11 @@ function MainStats() {
     const oldMatieresAverages = removeDoublonsMatieresAverages(
       getMatieresAverages(old_data[0], old_data[2])
     );
+    mergedMatieresAverages = mergeEvaluationsData(
+      matieresAverages,
+      oldMatieresAverages
+    );
+
     const oldCompAverages = calculateCompetenceAverages(
       old_data[1],
       oldMatieresAverages
@@ -129,6 +144,7 @@ function MainStats() {
       competences: validCompetences,
       matieresAverages: matieresAverages,
       oldMatieresAverages: oldMatieresAverages,
+      mergedMatieresAverages: mergedMatieresAverages,
       competenceAverages: compAverages,
       oldCompetenceAverages: oldCompAverages,
       generalAverage: totalCoef === 0 ? 0 : totalWeightedAverage / totalCoef,
@@ -198,16 +214,18 @@ function MainStats() {
         role="group"
         aria-label="Moyennes par matière"
       >
-        <StatsCard value={5} description={'Rien'} />
+        <ChartCard
+          title={'Moyennes des matières en fonction des coefficients'}
+          aria-label={'Moyennes des matières en fonction des coefficients'}
+        >
+          <CorrelationChart data={mergedMatieresAverages} />
+        </ChartCard>
         <ChartCard
           title={'Moyennes par matière'}
           aria-label={'Moyennes par matière'}
           className="col-span-2"
         >
-          <RadarMeansMatieres
-            data={matieresAverages ?? []}
-            old_data={oldMatieresAverages}
-          />
+          <RadarMeansMatieres mergedData={mergedMatieresAverages} />
         </ChartCard>
       </div>
       <div

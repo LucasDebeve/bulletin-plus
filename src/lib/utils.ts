@@ -7,6 +7,7 @@ import {
   Matiere,
   MatiereCompleteForOneCompetence,
   Competence,
+  MergedMatieresAverage,
 } from '@/types/notes';
 
 export function cn(...inputs: ClassValue[]) {
@@ -116,6 +117,36 @@ export function getBeforePipe(str: string): string {
 
 export function getAfterPipe(str: string): string {
   return str.match(/\|(.*)/)?.[1] || '';
+}
+
+export function mergeEvaluationsData(
+  data: MatiereAverage[],
+  old_data: MatiereAverage[] | undefined
+): MergedMatieresAverage[] {
+  const mergedData =
+    old_data?.map((matiere) => ({
+      matiere: matiere.matiere.matiere,
+      currentAverage: data.find(
+        (d) => d.matiere.matiere === matiere.matiere.matiere
+      )?.average,
+      oldAverage: matiere.average || null,
+      coef: matiere.matiere.coefs.reduce((acc, coef) => acc + coef.coef, 0),
+    })) || [];
+  data.forEach((d) => {
+    const old = old_data?.find(
+      (od) => od.matiere.matiere === d.matiere.matiere
+    );
+    if (!old) {
+      mergedData.push({
+        matiere: d.matiere.matiere,
+        currentAverage: d.average,
+        oldAverage: null,
+        coef: d.matiere.coefs.reduce((acc, coef) => acc + coef.coef, 0),
+      });
+    }
+  });
+
+  return mergedData;
 }
 
 export function getCoefMatiereForCompetence(

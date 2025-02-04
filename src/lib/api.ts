@@ -25,12 +25,10 @@ export async function fetchNotes(
     let old_data: ApiData | [] = JSON.parse(
       localStorage.getItem('data') || '[]'
     );
-    console.log(old_data);
     if (
       !localStorage.getItem('date') ||
       localStorage.getItem('date') !== new Date().toDateString()
     ) {
-      console.log('On met à jour le cache');
       localStorage.setItem('data', JSON.stringify(data));
       localStorage.setItem('date', new Date().toDateString());
     } else {
