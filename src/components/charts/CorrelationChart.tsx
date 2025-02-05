@@ -15,8 +15,6 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 function CorrelationChart({ data }: { data: MergedMatieresAverage[] }) {
-  console.log(data);
-
   return (
     <ChartContainer config={chartConfig} className={'w-full h-full'}>
       <ScatterChart accessibilityLayer data={data}>

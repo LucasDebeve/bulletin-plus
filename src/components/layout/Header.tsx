@@ -3,6 +3,7 @@ import {
   MenubarContent,
   MenubarItem,
   MenubarMenu,
+  MenubarSeparator,
   MenubarShortcut,
   MenubarTrigger,
 } from '@/components/ui/menubar';
@@ -12,7 +13,11 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import LoginForm from '@/components/layout/LoginForm.tsx';
 import { useState } from 'react';
 
-function Header() {
+function Header({
+  setDataToLocalStorage,
+}: {
+  setDataToLocalStorage: () => void;
+}) {
   const [open, setOpen] = useState(false);
 
   const handleClose = () => {
@@ -22,13 +27,17 @@ function Header() {
   return (
     <div className={'fixed top-2 left-2 right-2 z-10 max-w-[1280px] mx-auto'}>
       <Dialog open={open} onOpenChange={setOpen}>
-        <Menubar className={'flex items-center px-4 shadow-lg rounded-md'}>
-          <span className={'text-md font-semibold ml-2 mr-4'}>
+        <Menubar className={'flex items-center px-4 shadow-lg rounded-md h-10'}>
+          <span className={'text-md font-semibold ml-2 mr-4 my-3'}>
             Bulletin <span className="text-xl">+</span>
           </span>
           <MenubarMenu>
             <MenubarTrigger>Accueil</MenubarTrigger>
             <MenubarContent>
+              <MenubarItem onClick={setDataToLocalStorage}>
+                Sauvegarder
+              </MenubarItem>
+              <MenubarSeparator />
               <MenubarItem>Partager</MenubarItem>
               <MenubarItem>Imprimer</MenubarItem>
             </MenubarContent>
