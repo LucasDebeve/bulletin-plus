@@ -45,7 +45,6 @@ function Header({
                 Sauvegarder
               </MenubarItem>
               <MenubarSeparator />
-              <MenubarItem>Partager</MenubarItem>
               <MenubarItem onClick={handlePrint}>Imprimer</MenubarItem>
             </MenubarContent>
           </MenubarMenu>

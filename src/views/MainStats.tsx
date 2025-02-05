@@ -142,6 +142,11 @@ function MainStats({
           );
         })}
       </div>
+      <div className={'pt-10'}>
+        <hr className={'pb-3'} />
+        <h1 className={'text-2xl font-semibold'}>Détails des notes</h1>
+      </div>
+
       <DataTable columns={columns} data={evaluations} />
     </main>
   );
