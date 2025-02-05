@@ -14,6 +14,7 @@ import {
   mergeEvaluationsData,
   removeDoublonsMatieresAverages,
 } from '@/lib/utils.ts';
+import Footer from '@/components/layout/Footer.tsx';
 
 function App() {
   const { credentials } = useAuth();
@@ -26,7 +27,6 @@ function App() {
     const data = localStorage.getItem('data');
     const date = localStorage.getItem('date');
     if (data && date === new Date().toDateString()) {
-      console.log('On récupère la donnée du localStorage');
       const tmpData = JSON.parse(data);
       notesData = {
         data: tmpData,
@@ -36,7 +36,6 @@ function App() {
   }
 
   const setDataToLocalStorage = () => {
-    console.log('On sauvegarde la donnée dans le localStorage');
     localStorage.setItem('data', JSON.stringify(notesData?.data || []));
     localStorage.setItem('date', new Date().toDateString());
   };
@@ -70,8 +69,6 @@ function App() {
       };
     }
     const { data, old_data } = notesData;
-
-    console.log('UseMemo');
 
     const currentEvals = listEvaluations(data[0]);
     const matieresAverages = removeDoublonsMatieresAverages(
@@ -188,6 +185,7 @@ function App() {
         error={error}
       />
       <Toaster />
+      <Footer />
     </ThemeProvider>
   );
 }
