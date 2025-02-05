@@ -94,9 +94,9 @@ function MainStats({
           aria-label={`Moyenne générale de l'intranet : ${intranetAverage.toFixed(2)}, précédemment ${oldIntranetAverage.toFixed(2)}`}
         />
         <BoolCard
-          description={`Année scolaire ${isYearValidated ? 'validée' : 'non validée'}`}
+          description={`Semestre ${isYearValidated ? 'validé' : 'non validé'}`}
           value={isYearValidated}
-          aria-label={`Année scolaire validée : ${isYearValidated ? 'Oui' : 'Non'}`}
+          aria-label={`Semestre validée : ${isYearValidated ? 'Oui' : 'Non'}`}
         />
       </div>
       <div

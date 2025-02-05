@@ -31,22 +31,24 @@ function RadarMeansMatieres({
       <RadarChart accessibilityLayer data={mergedData}>
         <PolarGrid />
         <PolarAngleAxis dataKey="matiere" tickFormatter={getBeforePipe} />
-        <Radar
-          name={chartConfig.current.label}
-          dataKey="currentAverage"
-          stroke={'var(--color-current)'}
-          fill={'var(--color-current)'}
-          fillOpacity={0.3}
-        />
         {old_data && (
           <Radar
             name={'Anciennes moyennes'}
             dataKey="oldAverage"
             stroke={'var(--color-old)'}
-            fill={'var(--color-old)'}
-            fillOpacity={0.3}
+            strokeWidth={2}
+            fillOpacity={0}
           />
         )}
+        <Radar
+          name={chartConfig.current.label}
+          dataKey="currentAverage"
+          stroke={'var(--color-current)'}
+          fill={'var(--color-current)'}
+          fillOpacity={0.2}
+          strokeWidth={2}
+        />
+
         <ChartTooltip
           cursor={false}
           content={
