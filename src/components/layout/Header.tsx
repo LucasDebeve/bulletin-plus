@@ -4,7 +4,6 @@ import {
   MenubarItem,
   MenubarMenu,
   MenubarSeparator,
-  MenubarShortcut,
   MenubarTrigger,
 } from '@/components/ui/menubar';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
@@ -24,31 +23,30 @@ function Header({
     setOpen(false);
   };
 
+  const handlePrint = () => {
+    window.print();
+  };
+
   return (
     <div className={'fixed top-2 left-2 right-2 z-10 max-w-[1280px] mx-auto'}>
       <Dialog open={open} onOpenChange={setOpen}>
-        <Menubar className={'flex items-center px-4 shadow-lg rounded-md h-10'}>
+        <Menubar
+          className={
+            'flex items-center px-4 shadow-lg rounded-md h-10 print:hidden'
+          }
+        >
           <span className={'text-md font-semibold ml-2 mr-4 my-3'}>
             Bulletin <span className="text-xl">+</span>
           </span>
           <MenubarMenu>
             <MenubarTrigger>Accueil</MenubarTrigger>
-            <MenubarContent>
+            <MenubarContent className={'print:hidden'}>
               <MenubarItem onClick={setDataToLocalStorage}>
                 Sauvegarder
               </MenubarItem>
               <MenubarSeparator />
               <MenubarItem>Partager</MenubarItem>
-              <MenubarItem>Imprimer</MenubarItem>
-            </MenubarContent>
-          </MenubarMenu>
-          <MenubarMenu>
-            <MenubarTrigger>Modifier</MenubarTrigger>
-            <MenubarContent>
-              <MenubarItem>
-                Ajouter une note <MenubarShortcut>Ctrl + N</MenubarShortcut>
-              </MenubarItem>
-              <MenubarItem>Supprimer une note</MenubarItem>
+              <MenubarItem onClick={handlePrint}>Imprimer</MenubarItem>
             </MenubarContent>
           </MenubarMenu>
           <MenubarMenu>
@@ -65,7 +63,7 @@ function Header({
                   src="https://github.com/shadcn.png"
                   alt="@shadcn"
                 />
-                <AvatarFallback>CN</AvatarFallback>
+                <AvatarFallback>&#9829;</AvatarFallback>
               </Avatar>
             </MenubarTrigger>
             <MenubarContent>

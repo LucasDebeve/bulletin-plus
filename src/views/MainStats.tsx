@@ -69,9 +69,9 @@ function MainStats({
   }
 
   return (
-    <main className="pt-10 pb-4 space-y-4">
+    <main className="pt-16 pb-4 space-y-4">
       <div
-        className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4"
+        className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 print:grid-cols-2"
         role={'group'}
         aria-label={'Statistiques principales'}
       >
@@ -100,7 +100,7 @@ function MainStats({
         />
       </div>
       <div
-        className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3"
+        className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 print:grid-cols-2"
         role="group"
         aria-label="Moyennes par matière"
       >
@@ -113,13 +113,13 @@ function MainStats({
         <ChartCard
           title={'Moyennes par matière'}
           aria-label={'Moyennes par matière'}
-          className="col-span-2"
+          className="col-span-1 lg:col-span-2 print:col-span-1"
         >
           <RadarMeansMatieres mergedData={mergedMatieresAverages} />
         </ChartCard>
       </div>
       <div
-        className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-5"
+        className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5"
         role="group"
         aria-label="Moyennes par compétence"
       >
