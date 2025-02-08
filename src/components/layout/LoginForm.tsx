@@ -87,7 +87,7 @@ function LoginForm({ handleClose }: { handleClose: () => void }) {
             )}
           />
           <Button type="submit" className="w-full">
-            Submit
+            Se connecter
           </Button>
         </form>
       </Form>
