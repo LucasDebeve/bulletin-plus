@@ -1,6 +1,7 @@
 {
   "name": "bulletin-plus",
-  "private": true,
+  "private": false,
+  "homepage": "https://bulletin-plus.lucasdebeve.fr",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
