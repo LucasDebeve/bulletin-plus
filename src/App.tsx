@@ -69,6 +69,24 @@ function App() {
       };
     }
     const { data, old_data } = notesData;
+    console.log(data);
+
+    // if data is type ApiError
+    if ('error' in data) {
+      return {
+        evaluations: [],
+        oldEvaluations: [],
+        mergedMatieresAverages: [],
+        competences: [],
+        competenceAverages: [],
+        oldCompetenceAverages: [],
+        generalAverage: 0,
+        oldGeneralAverage: 0,
+        intranetAverage: 0,
+        oldIntranetAverage: 0,
+        isYearValidated: false,
+      };
+    }
 
     const currentEvals = listEvaluations(data[0]);
     const matieresAverages = removeDoublonsMatieresAverages(

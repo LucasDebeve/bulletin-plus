@@ -54,14 +54,17 @@ function MainStats({
     );
   }
 
-  if (error) {
+  if (error || evaluations.length === 0) {
     return (
       <div className="flex justify-center items-center h-screen">
         <Alert variant="destructive" role={'alert'} aria-live={'assertive'}>
           <AlertCircle className="h-4 w-4" />
           <AlertTitle>Erreur</AlertTitle>
           <AlertDescription>
-            {error.message || 'Une erreur est survenue'}
+            {error?.message ??
+              (evaluations?.length === 0
+                ? 'Aucune note trouvée'
+                : 'Erreur inconnue')}
           </AlertDescription>
         </Alert>
       </div>

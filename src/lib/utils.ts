@@ -15,7 +15,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function listEvaluations(data: MatiereEvaluee[]): EvaluationComplete[] {
-  if (data.length === 0) {
+  if (data === undefined || data.length === 0) {
     return [];
   }
 

@@ -24,6 +24,9 @@ export type Matiere = {
 };
 
 export type ApiData = [MatiereEvaluee[], Competence[], Matiere[]];
+export type ApiError = {
+  error: Error;
+};
 
 export type MergedMatieresAverage = {
   matiere: string;
